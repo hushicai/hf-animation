@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>test</title>
+</head>
+<body>
+    <div id="test" style="position: absolute; top: 0; left: 0;">123</div>
+    <script src="http://apps.bdimg.com/libs/require.js/2.1.9/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: '../src',
+            packages: [
+            {
+                name: 'hf-caf',
+                location: '../dep/hf-caf/src',
+                main: 'main'
+            },
+            {
+                name: 'hf-emitter',
+                location: '../dep/hf-emitter/src',
+                main: 'main'
+            },
+            {
+                name: 'hf-raf',
+                location: '../dep/hf-raf/src',
+                main: 'main'
+            },
+            {
+                name: 'hf-timeline',
+                location: '../dep/hf-timeline/src',
+                main: 'main'
+            },
+            {
+                name: 'hf-type',
+                location: '../dep/hf-type/src',
+                main: 'main'
+            },
+            {
+                name: 'hf-util',
+                location: '../dep/hf-util/src',
+                main: 'main'
+            }
+            ]
+        });
+
+        require(['Target', 'Keyframe'], function (Target, Keyframe) {
+            var el = document.getElementById('test');
+
+            var target = new Target();
+            target.on('frame', function (data) {
+                el.style.opacity = data.opacity;
+            });
+
+            var anim = new Keyframe({
+                keyframes: [
+                    {opacity: 1},
+                    {opacity: 0}
+                ]
+            });
+
+            target.run(anim);
+        });
+    </script>
+</body>
+</html>
