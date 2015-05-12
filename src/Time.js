@@ -24,6 +24,8 @@ define(
             this._startTime = 0.0;
             this._endTime = this._startTime + this.beginDelay + this._activeDuration + this.endDelay;
 
+            this._currentIteration = 0;
+
             this._timeFraction = 0.0;
         }
 
@@ -43,8 +45,6 @@ define(
         Time.prototype.frame = function () {
             this.emit('frame', this._timeFraction);
         };
-
-        Time.prototype.isForwards = function () {};
 
         /**
          * 是否结束

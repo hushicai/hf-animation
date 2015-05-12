@@ -50,12 +50,47 @@ define(
 
             var duration = this.duration;
             var isAtEndOfIterations = (elapsedTime === activeDuration);
+
+            // 当前迭代
+            this._currentIteration = isAtEndOfIterations
+                ? (elapsedTime / duration - 1)
+                : Math.floor(elapsedTime / duration);
+
             var localTime = isAtEndOfIterations
                 ? duration
                 : (elapsedTime % duration);
 
+            localTime = this.isCurrentDirectionForwards()
+                ? localTime
+                : duration - localTime;
+
             // 比例
             this._timeFraction = this._timingFunction(localTime / duration);
+        };
+
+        Time.prototype.isCurrentDirectionForwards = function () {
+            var isForwards;
+
+            switch (this.direction) {
+                // 正向
+                case 'normal':
+                    isForwards = true;
+                    break;
+                // 反向
+                case 'reverse':
+                    isForwards = false;
+                    break;
+                // 偶数次正向，奇数次反向
+                case 'alternate':
+                    isForwards = this._currentIteration % 2 === 0;
+                    break;
+                // 偶数次相反向，奇数次正向
+                case 'alternate-reverse':
+                    isForwards = (this._currentIteration + 1) % 2 === 0;
+                    break;
+            }
+
+            return isForwards;
         };
 
         /**
