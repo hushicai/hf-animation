@@ -6,6 +6,11 @@
 define(
     function (require) {
         var inherits = require('hf-util/inherits');
+
+        function isDefinedAndNotNull(val) {
+            return val !== undefined && val !== null;
+        }
+
         function FrameInternal(options) {
             this.offset = options.offset === undefined ? null : options.offset;
             delete options.offset;
@@ -36,13 +41,13 @@ define(
             var nextOffsetIndex = 0;
             for (var i = 1; i < frames.length - 1; i++) {
                 var frameInternal = frames[i];
-                if (frameInternal.offset !== undefined) {
+                if (isDefinedAndNotNull(frameInternal.offset)) {
                     lastOffsetIndex = i;
                     continue;
                 }
                 if (i > nextOffsetIndex) {
                     nextOffsetIndex = i;
-                    while (!frames[nextOffsetIndex].offset !== undefined) {
+                    while (!isDefinedAndNotNull(frames[nextOffsetIndex].offset)) {
                         nextOffsetIndex++;
                     }
                 }
@@ -59,7 +64,7 @@ define(
         function KeyframeStruct(options) {
             this.property = options.property;
             this.value = parseFloat(options.value, 10);
-            this.offset = options.offset === undefined ? null : options.offset;
+            this.offset = options.offset;
         }
 
         var Animation = require('./Animation');

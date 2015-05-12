@@ -32,6 +32,11 @@
                 main: 'main'
             },
             {
+                name: 'hf-css',
+                location: '../dep/hf-css/src',
+                main: 'main'
+            },
+            {
                 name: 'hf-type',
                 location: '../dep/hf-type/src',
                 main: 'main'
@@ -44,18 +49,23 @@
             ]
         });
 
-        require(['Target', 'Keyframe'], function (Target, Keyframe) {
+        require(['DomTarget', 'Keyframe'], function (DomTarget, Keyframe) {
             var el = document.getElementById('test');
 
-            var target = new Target();
+            var target = new DomTarget({
+                element: el
+            });
+
             target.on('frame', function (data) {
-                el.style.opacity = data.opacity;
+                console.log(data);
             });
 
             var anim = new Keyframe({
+                duration: 3000,
                 keyframes: [
-                    {opacity: 1},
-                    {opacity: 0}
+                    {left: 0, top: 0},
+                    {left: 100, top: 200},
+                    {left: 200, top: 100}
                 ]
             });
 
