@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "hf-css": "*",
     "hf-util": "*"
   },
   "devDependencies": {
