@@ -81,6 +81,7 @@ define(
 
                 if (isFinished) {
                     finishes.push(anim);
+                    anim.done();
                 }
             }
 

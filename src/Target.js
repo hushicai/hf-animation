@@ -20,6 +20,10 @@ define(
             this.emit('frame', data);
         };
 
+        Target.prototype.done = function () {
+            this.emit('done');
+        };
+
         Target.prototype.run = function (anim) {
             this._animation = anim;
             anim.startWithTarget(this);

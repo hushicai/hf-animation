@@ -46,12 +46,18 @@ define(
             this.emit('frame', this._timeFraction);
         };
 
+        Time.prototype.done = function () {
+            this.emit('done');
+        };
+
         /**
          * 是否结束
          *
          * @virtual
          */
         Time.prototype.isFinished = function () {};
+
+        require('hf-emitter').mixin(Time.prototype)
 
         return Time;
     }

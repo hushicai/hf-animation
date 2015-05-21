@@ -10,6 +10,8 @@ define(
 
         function InstantTime(options) {
             options = options || {};
+            options.duration = 0;
+            options.iterations = 1;
             Time.call(this, options);
         }
 

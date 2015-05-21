@@ -72,6 +72,11 @@ define(
         function Keyframe(options) {
             Animation.call(this, options);
 
+            if (!options.keyframes) {
+                console.log('No keyframes specificed!');
+                return this;
+            }
+
             // 初始化
             var keyframesDictionary = {};
             var frames = distributedFrames(options.keyframes);

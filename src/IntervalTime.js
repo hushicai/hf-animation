@@ -84,7 +84,7 @@ define(
                 case 'alternate':
                     isForwards = this._currentIteration % 2 === 0;
                     break;
-                // 偶数次相反向，奇数次正向
+                // 偶数次反向，奇数次正向
                 case 'alternate-reverse':
                     isForwards = (this._currentIteration + 1) % 2 === 0;
                     break;
