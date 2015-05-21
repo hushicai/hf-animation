@@ -67,15 +67,17 @@ define(
             this.offset = options.offset;
         }
 
-        var Animation = require('./Animation');
+        var IntervalTime = require('./IntervalTime');
 
         function Keyframe(options) {
-            Animation.call(this, options);
+            IntervalTime.call(this, options);
 
             if (!options.keyframes) {
                 console.log('No keyframes specificed!');
                 return this;
             }
+
+            this._targetList = [];
 
             // 初始化
             var keyframesDictionary = {};
@@ -100,6 +102,33 @@ define(
             this._keyframesDictionary = keyframesDictionary;
         }
 
+        Keyframe.prototype.addTarget = function (target) {
+            if (!this.hasTarget(target)) {
+                this._targetList.push(target);
+            }
+            return this;
+        };
+
+        Keyframe.prototype.hasTarget = function (target) {
+            return this._targetList.indexOf(target) >= 0;
+        };
+
+        Keyframe.prototype.frame = function () {
+            var targetList = this._targetList;
+            for (var i = 0, len = targetList.length; i < len; i++) {
+                this.sampleForTarget(targetList[i]);
+            }
+        };
+
+        Keyframe.prototype.done = function () {
+            var targetList = this._targetList;
+            for (var i = 0, len = targetList.length; i < len; i++) {
+                var target = targetList[i];
+                target.done && target.done();
+            }
+            return this;
+        };
+
         /**
          * @override
          */
@@ -114,7 +143,7 @@ define(
             target.frame(result);
         };
 
-        Animation.prototype._sampleForTargetProperty = function (target, property, keyframes) {
+        Keyframe.prototype._sampleForTargetProperty = function (target, property, keyframes) {
             var timeFraction = this._timeFraction;
             var startKeyframeIndex;
             var length = keyframes.length;
@@ -154,7 +183,7 @@ define(
             return nowValue;
         };
 
-        inherits(Keyframe, Animation);
+        inherits(Keyframe, IntervalTime);
         return Keyframe;
     }
 );

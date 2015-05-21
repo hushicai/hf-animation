@@ -2,7 +2,7 @@
   "name": "hf-animation",
   "version": "1.0.0",
   "description": "js animation",
-  "main": "index.js",
+  "main": "src/Animation.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

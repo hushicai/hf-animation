@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>bezier</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="test" width="400" height="400"></canvas>
+    <script src="../dep/requirejs/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: '../src',
+            packages: [{
+                name: 'hf-caf',
+                location: '../dep/hf-caf/src',
+                main: 'main'
+            }, {
+                name: 'hf-canvas',
+                location: '../dep/hf-canvas/src',
+                main: 'main'
+            }, {
+                name: 'hf-css',
+                location: '../dep/hf-css/src',
+                main: 'main'
+            }, {
+                name: 'hf-emitter',
+                location: '../dep/hf-emitter/src',
+                main: 'main'
+            }, {
+                name: 'hf-raf',
+                location: '../dep/hf-raf/src',
+                main: 'main'
+            }, {
+                name: 'hf-type',
+                location: '../dep/hf-type/src',
+                main: 'main'
+            }, {
+                name: 'hf-util',
+                location: '../dep/hf-util/src',
+                main: 'main'
+            }, {
+                name: 'requirejs',
+                location: '../dep/requirejs/src',
+                main: 'main'
+            }]
+        });
+
+        require(['hf-canvas', 'Animation'], function(hfc, Animation, extend) {
+            var animation = new Animation();
+            animation.start();
+
+            var el = document.getElementById('test');
+            var ctx = hfc.init(el);
+
+            var style = {
+                startX: 50,
+                startY: 50,
+                controlX: 300,
+                controlY: 50,
+                endX: 300,
+                endY: 300
+            };
+
+            // 二次贝赛尔曲线
+            // 套公式？
+            // 还是用算法？
+            function quadraticCurve(t) {
+                return {
+                    x: Math.pow(1 - t, 2) * style.startX 
+                            + 2 * t * (1 - t) * style.controlX 
+                            + Math.pow(t, 2) * style.endX,
+                    y: Math.pow(1 - t, 2) * style.startY 
+                            + 2 * t * (1 - t) * style.controlY 
+                            + Math.pow(t, 2) * style.endY
+                };
+            }
+
+            var last = {
+                x: style.startX,
+                y: style.startY
+            };
+            var target = {
+                frame: function (data) {
+                    var p = data.p;
+                    var n = quadraticCurve(p);
+
+                    ctx.beginPath();
+                    ctx.moveTo(last.x, last.y);
+                    ctx.lineTo(n.x, n.y)
+                    <!-- ctx.quadraticCurveTo(controlX, controlY, endX, endY); -->
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = "#333";
+                    ctx.stroke();
+                    last = n;
+                }
+            };
+            var animator = animation.animate(
+                target,
+                [
+                    {p: 0},
+                    {p: 1}
+                ],
+                {
+                    duration: 1000
+                }
+            );
+            animator.start();
+        });
+    </script>
+</body>
+
+</html>

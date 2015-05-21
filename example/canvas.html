@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>canvas</title>
 </head>
+
 <body>
     <div style="width: 200px; height: 200px;">
         <canvas id="test" width="400" height="400" style="width: 100%; height: 100%;"></canvas>
@@ -12,53 +14,44 @@
     <script>
         require.config({
             baseUrl: '../src',
-            packages: [
-            {
+            packages: [{
                 name: 'hf-caf',
                 location: '../dep/hf-caf/src',
                 main: 'main'
-            },
-            {
-                name: 'hf-emitter',
-                location: '../dep/hf-emitter/src',
+            }, {
+                name: 'hf-canvas',
+                location: '../dep/hf-canvas/src',
                 main: 'main'
-            },
-            {
-                name: 'hf-raf',
-                location: '../dep/hf-raf/src',
-                main: 'main'
-            },
-            {
-                name: 'hf-timeline',
-                location: '../dep/hf-timeline/src',
-                main: 'main'
-            },
-            {
+            }, {
                 name: 'hf-css',
                 location: '../dep/hf-css/src',
                 main: 'main'
-            },
-            {
+            }, {
+                name: 'hf-emitter',
+                location: '../dep/hf-emitter/src',
+                main: 'main'
+            }, {
+                name: 'hf-raf',
+                location: '../dep/hf-raf/src',
+                main: 'main'
+            }, {
                 name: 'hf-type',
                 location: '../dep/hf-type/src',
                 main: 'main'
-            },
-            {
+            }, {
                 name: 'hf-util',
                 location: '../dep/hf-util/src',
                 main: 'main'
-            }
-            ]
+            }, {
+                name: 'requirejs',
+                location: '../dep/requirejs/src',
+                main: 'main'
+            }]
         });
-        require(['Target', 'Keyframe'], function (Target, Keyframe) {
+
+        require(['hf-canvas', 'Animation'], function(hfc, Animation) {
             var canvas = document.getElementById('test');
-            var ctx = canvas.getContext('2d');
-
-            var dpr = window.devicePixelRatio;
-
-            if (dpr !== 1) {
-                ctx.scale(dpr, dpr);
-            }
+            var ctx = hfc.init(canvas);
 
             function draw(style) {
                 ctx.clearRect(0, 0, 400, 400);
@@ -71,28 +64,34 @@
                 ctx.moveTo(x + r, y);
                 ctx.arc(x, y, r, 0, 2 * Math.PI, true);
                 ctx.closePath();
-                ctx.strokeStyle= 'rgba(255,143,9,1)';
+                ctx.strokeStyle = 'rgba(255,143,9,1)';
                 ctx.shadowColor = 'rgba(255,143,9,1)';
                 ctx.shadowBlur = 3;
                 ctx.lineWidth = 1;
                 ctx.stroke();
             }
 
-            var target = new Target();
+            var animation = new Animation();
+            animation.start();
 
-            target.frame = draw;
+            var target = {
+                frame: function(data) {
+                    draw(data);
+                }
+            };
 
-            var keyframe = new Keyframe({
-                duration: 2000,
+            var animator = animation.animate(target, [{
+                r: 5
+            }, {
+                r: 10
+            }], {
+                duration: 1000,
                 iterations: Infinity,
-                keyframes: [
-                {r: 5},
-                {r: 30}
-                ]
+                direction: 'alternate'
             });
-
-            target.run(keyframe);
+            animator.start();
         });
     </script>
 </body>
+
 </html>

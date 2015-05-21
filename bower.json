@@ -5,6 +5,7 @@
   "authors": [
     "hushicai <bluthcy@gmail.com>"
   ],
+  "main": "src/Animation.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -18,6 +19,7 @@
     "hf-util": "*"
   },
   "devDependencies": {
-    "requirejs": "~2.1.17"
+    "requirejs": "~2.1.17",
+    "hf-canvas": "*"
   }
 }

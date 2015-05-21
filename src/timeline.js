@@ -91,11 +91,8 @@ define(
             }
         };
 
-        Timeline.prototype.play = function (anim) {
+        Timeline.prototype.add = function (anim) {
             !this.hasAnim(anim) && this._anims.push(anim);
-            if (!this._running) {
-                this.start();
-            }
             return this;
         };
 
