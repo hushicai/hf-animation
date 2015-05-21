@@ -64,8 +64,10 @@ define(
                 ? localTime
                 : duration - localTime;
 
+            var percent = localTime / duration;
+
             // 比例
-            this._timeFraction = this._timingFunction(localTime / duration);
+            this._timeFraction = this._timingFunction(percent);
         };
 
         Time.prototype.isCurrentDirectionForwards = function () {

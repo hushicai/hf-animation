@@ -18,6 +18,7 @@ define(
             this.iterations = options.iterations || 1;
             this.beginDelay = options.beginDelay || 0;
             this.endDelay = options.endDelay || 0;
+            this.playRate = options.playRate || 1;
 
             this._activeDuration = this.duration * this.iterations;
             this._elapsedTime = 0.0;
@@ -57,7 +58,7 @@ define(
          */
         Time.prototype.isFinished = function () {};
 
-        require('hf-emitter').mixin(Time.prototype)
+        require('hf-emitter').mixin(Time.prototype);
 
         return Time;
     }
